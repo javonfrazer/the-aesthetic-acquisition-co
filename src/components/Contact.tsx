@@ -51,7 +51,8 @@ export function Contact() {
         throw new Error(data.error ?? "Something went wrong. Please try again.");
       }
 
-      setStatus("success");
+      (window as any).fbq?.("track", "Lead");
+setStatus("success");
       form.reset();
     } catch (err) {
       setStatus("error");
