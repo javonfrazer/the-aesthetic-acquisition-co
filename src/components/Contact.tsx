@@ -38,12 +38,12 @@ export function Contact() {
     const form = event.currentTarget;
     const formData = new FormData(form);
     const payload = Object.fromEntries(formData.entries());
-
+    const eventId = crypto.randomUUID();
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, eventId }),
       });
 
       if (!res.ok) {
@@ -51,7 +51,12 @@ export function Contact() {
         throw new Error(data.error ?? "Something went wrong. Please try again.");
       }
 
-(window as Window & { fbq?: (...args: string[]) => void }).fbq?.("track", "Lead");
+(window as Window & { fbq?: (...args: unknown[]) => void }).fbq?.(
+"track",
+"Lead",
+{},
+{ eventID: eventId }
+);
 setStatus("success");
       form.reset();
     } catch (err) {
