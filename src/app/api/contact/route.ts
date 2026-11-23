@@ -6,6 +6,7 @@ type ContactPayload = {
   phone?: string;
   spaName?: string;
   message?: string;
+  eventId?: string;
 };
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,7 +20,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request body." }, { status: 400 });
   }
 
-  const { name, email, phone, spaName, message } = body;
+  const { name, email, phone, spaName, message, eventId } = body;
 
   if (!name?.trim() || !email?.trim() || !message?.trim()) {
     return NextResponse.json(
